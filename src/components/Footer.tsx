@@ -51,8 +51,10 @@ export default function Footer() {
         
         <div className="pt-8 border-t border-border flex flex-col md:flex-row items-center justify-between text-sm text-foreground/50">
           <p>© {new Date().getFullYear()} QRCraft.app. All rights reserved.</p>
-          <div className="flex gap-4 mt-4 md:mt-0">
-            <Link href="/privacy" className="hover:text-primary transition">Privacy Policy</Link>
+          <div className="flex flex-wrap gap-x-6 gap-y-2 mt-4 md:mt-0 justify-center">
+            <Link href="/about" className="hover:text-primary transition">About</Link>
+            <Link href="/contact" className="hover:text-primary transition">Contact</Link>
+            <Link href="/privacy-policy" className="hover:text-primary transition">Privacy Policy</Link>
             <Link href="/terms" className="hover:text-primary transition">Terms of Service</Link>
           </div>
         </div>
