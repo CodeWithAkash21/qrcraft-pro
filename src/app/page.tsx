@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { QRType, QRCodeConfig, INITIAL_QR_CONFIG } from "@/types/qr";
 import TabSelector from "@/components/TabSelector";
 import InputForms from "@/components/InputForms";
@@ -20,9 +20,35 @@ export default function Home() {
     setConfig((prev) => ({ ...prev, ...updates }));
   };
 
-  const handleDownloadPNG = () => downloadPNG("qrcraft.png");
-  const handleDownloadSVG = () => downloadSVG(payload, config, "qrcraft.svg");
-  const handleDownloadPDF = () => downloadPDF("qrcraft.pdf");
+  useEffect(() => {
+    if (payload && typeof window !== 'undefined' && typeof (window as any).gtag === 'function') {
+      const timeout = setTimeout(() => {
+        (window as any).gtag('event', 'qr_generated', {qr_type: activeTab});
+      }, 1500);
+      return () => clearTimeout(timeout);
+    }
+  }, [payload, activeTab]);
+
+  const handleDownloadPNG = () => {
+    if (typeof window !== 'undefined' && typeof (window as any).gtag === 'function') {
+      (window as any).gtag('event', 'qr_downloaded', {format: 'png'});
+    }
+    downloadPNG("qrcraft.png");
+  };
+  
+  const handleDownloadSVG = () => {
+    if (typeof window !== 'undefined' && typeof (window as any).gtag === 'function') {
+      (window as any).gtag('event', 'qr_downloaded', {format: 'svg'});
+    }
+    downloadSVG(payload, config, "qrcraft.svg");
+  };
+  
+  const handleDownloadPDF = () => {
+    if (typeof window !== 'undefined' && typeof (window as any).gtag === 'function') {
+      (window as any).gtag('event', 'qr_downloaded', {format: 'pdf'});
+    }
+    downloadPDF("qrcraft.pdf");
+  };
 
   const handleShare = () => {
     // We could generate a shareable URL to this exact config and data
